@@ -14,12 +14,10 @@ public class EnemyMovement : MonoBehaviour
         transform.Translate(Vector3.down * velocidad * Time.deltaTime);
     }
 
-    // Esta función la llama Unity automáticamente al chocar
     private void OnTriggerEnter2D(Collider2D otroObjeto)
 {
     if (otroObjeto.CompareTag("Bala"))
     {
-        // Busca al GameManager en la escena y le dice que sume 10 puntos
         FindObjectOfType<GameManager>().SumarPuntos(10);
 
         Destroy(otroObjeto.gameObject);
