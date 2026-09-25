@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
         float movimientoY = Input.GetAxis("Vertical");
         transform.Translate(new Vector3(movimientoX, movimientoY, 0) * velocidad * Time.deltaTime, Space.World);
 
+        ControlarBordesPantalla();
+
         RotarHaciaRaton();
 
         if (Input.GetMouseButtonDown(0))
@@ -40,13 +42,31 @@ public class PlayerMovement : MonoBehaviour
 
     void ControlarBordesPantalla()
 {
+    Vector3 esquinaInferiorIzquierda = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
+    Vector3 esquinaSuperiorDerecha = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Camera.main.nearClipPlane));
+
+    float limiteX = esquinaSuperiorDerecha.x;
+    float limiteY = esquinaSuperiorDerecha.y;
+
     Vector3 posicion = transform.position;
 
-    if (posicion.x > limitePantallaX) posicion.x = -limitePantallaX;
-    else if (posicion.x < -limitePantallaX) posicion.x = limitePantallaX;
+    if (posicion.x > limiteX + 0.5f)
+    {
+        posicion.x = -limiteX - 0.5f;
+    }
+    else if (posicion.x < -limiteX - 0.5f)
+    {
+        posicion.x = limiteX + 0.5f;
+    }
 
-    if (posicion.y > limitePantallaY) posicion.y = -limitePantallaY;
-    else if (posicion.y < -limitePantallaY) posicion.y = limitePantallaY;
+    if (posicion.y > limiteY + 0.5f)
+    {
+        posicion.y = -limiteY - 0.5f;
+    }
+    else if (posicion.y < -limiteY - 0.5f)
+    {
+        posicion.y = limiteY + 0.5f;
+    }
 
     transform.position = posicion;
 }
